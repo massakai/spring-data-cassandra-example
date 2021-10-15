@@ -1,0 +1,10 @@
+spring:
+  data:
+    cassandra:
+      contact-points:
+        - localhost
+      port: 9042
+      local-datacenter: datacenter1
+      username: ${CASSANDRA_USER}
+      password: ${CASSANDRA_PASSWORD}
+      keyspace-name: test
