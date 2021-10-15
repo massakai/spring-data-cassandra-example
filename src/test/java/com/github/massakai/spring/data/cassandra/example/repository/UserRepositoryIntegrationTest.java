@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.massakai.spring.data.cassandra.example.model.User;
 import com.github.massakai.spring.data.cassandra.example.repository.UserRepositoryIntegrationTest.TestConfiguration;
+import java.time.Duration;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,28 @@ class UserRepositoryIntegrationTest {
     userRepository.delete(user1).block();
     User user4 = userRepository.findById(userId).block();
     assertThat(user4).isNull();
+  }
+
+  @Test
+  @DisplayName("TTLの読み書きができる")
+  void testTtlReadWrite() {
+    var userId = "2";
+    var user1 = new User(userId, "Masashi", "Sakai");
+    var ttl1 = Duration.ofSeconds(50);
+
+    userRepository.save(user1, ttl1).block();
+
+    var user2 = new User(userId, null, "Sakai");
+    var ttl2 = Duration.ofSeconds(100);
+    userRepository.save(user2, ttl2).block();
+
+    Duration firstNameTtl = userRepository.findFirstNameTtlById(userId).block();
+    assertThat(firstNameTtl)
+        .isBetween(ttl1.minusSeconds(1), ttl1);
+
+    Duration lastNameTtl = userRepository.findLastNameTtlById(userId).block();
+    assertThat(lastNameTtl)
+        .isBetween(ttl2.minusSeconds(1), ttl2);
   }
 
 }
