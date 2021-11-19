@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono;
 /**
  * UserエンティティのTTLに関するカスタムインターフェース
  */
-public interface UserTtlOperations {
+public interface UserTtlRepository {
 
   /**
    * UserエンティティをTTL付きで保存する

@@ -17,11 +17,11 @@ import reactor.core.publisher.Mono;
  * <p>SpringがUserRepositoryをBean定義するときにカスタム実装は インターフェース名+"Impl" で探索するのでクラス名は変更しないこと</p>
  */
 @SuppressWarnings("unused")
-public class UserTtlOperationsImpl implements UserTtlOperations {
+public class UserTtlRepositoryImpl implements UserTtlRepository {
 
   private final ReactiveCassandraOperations reactiveCassandraOperations;
 
-  public UserTtlOperationsImpl(final ReactiveCassandraOperations reactiveCassandraOperations) {
+  public UserTtlRepositoryImpl(final ReactiveCassandraOperations reactiveCassandraOperations) {
     this.reactiveCassandraOperations = reactiveCassandraOperations;
   }
 
